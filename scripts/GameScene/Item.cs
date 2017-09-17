@@ -13,8 +13,9 @@ public class Item : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		spriteRenderer.sprite = itemSprite[type]; //種類に合わせて画像を変更
+		player = GameObject.FindGameObjectWithTag("Player");
 	}
-	
+
 
 	//スクロールに合わせて落ちる
 	void Scroll() {
