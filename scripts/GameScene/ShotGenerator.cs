@@ -14,10 +14,10 @@ public class ShotGenerator : MonoBehaviour {
 
 	void Generate(Vector3 pos) {
 		Instantiate(shot, pos, Quaternion.Euler(0, 0, 0), parent);
-		print("a");
+		//print("a");
 	}
 
 	void Update() {
-		//Generate(new Vector3(0, 0, 0));
+
 	}
 }

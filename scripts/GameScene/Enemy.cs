@@ -27,11 +27,6 @@ public class Enemy : MonoBehaviour {
 	//スクロールに合わせて落ちる
 	void Scroll() {
 		transform.localPosition += new Vector3(0, -BG.velocity, 0);
-
-		//十分画面下まで行ったら消す
-		if (transform.localPosition.y < -Constant.UNIT_Y) {
-			Destroy(gameObject);
-		}
 	}
 
 	//自主的に動く
@@ -63,10 +58,12 @@ public class Enemy : MonoBehaviour {
 		Attack();
 		//spriteRenderer.sprite = enemySprite[type]; //種類に合わせて画像を変更
 
+		/*
 		//これはデバッグ用
 		if (MyInput.keyState[(int)KeyCode.K].press) {
 			Kill();
 		}
+		*/
 
 		frameCount++;
 	}
