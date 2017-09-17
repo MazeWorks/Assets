@@ -34,7 +34,7 @@ public class EnemyGenerator : MonoBehaviour {
 	// Update is called once per frame
 	void Update() {
 
-		if (MyInput.mouseState[1].press) { //仮。マウス右クリックしたら。
+		if (MyInput.mouseState[1].press) { //仮。マウス右クリックしたら。ToDo
 			Vector3 pos = new Vector3(Random.Range(-Constant.UNIT_X / 2 + 1, Constant.UNIT_X / 2 - 1), Constant.UNIT_Y / 2 + 0.5f, 0); //生成する座標
 
 			//生成
