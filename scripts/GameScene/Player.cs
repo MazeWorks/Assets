@@ -212,7 +212,7 @@ public class Player : MonoBehaviour
         Barrier barrier_cmp = barrier.GetComponent<Barrier>();
         if (barrier_cmp.isActive)
         {
-            barrier.GetComponent<Barrier>().active();
+            barrier.GetComponent<Barrier>().inactive();
             return;
         }
 
