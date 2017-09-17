@@ -18,8 +18,16 @@ public class Shot : MonoBehaviour {
 		float distanceX = target.transform.position.x - transform.position.x;
 		float distanceY = target.transform.position.y - transform.position.y;
 
-		angle = Mathf.Atan(distanceY / distanceX);
+		if (distanceX >= 0) {
+			angle = Mathf.Atan(distanceY / distanceX);
+		}
+		else {
+			angle = Mathf.Atan(distanceY / distanceX) + Mathf.PI;
+		}
 		//ここまで自機狙い弾
+
+		//殺す用
+		player = GameObject.FindGameObjectWithTag("Player");
 
 		//画像の向き変更
 		transform.rotation = Quaternion.Euler(0, 0, Mathf.Rad2Deg * angle);
