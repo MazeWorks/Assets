@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
     List<Line> Lines;
 
     // 敵キャラのためのリスト
-    List<GameObject> Enemies;
+    public EnemyList enemies;
 
     // バリア
     public GameObject barrier;
@@ -35,15 +35,6 @@ public class Player : MonoBehaviour
         Velocity = new Vector2(0, 0);
         MoveDistance = 0;
         Lines = new List<Line>();
-        Enemies = new List<GameObject>();
-        try
-        {
-            Enemies.AddRange(GameObject.FindGameObjectsWithTag("Enemy"));
-        }
-        catch (UnityException)
-        {
-
-        }
         gameObject.GetComponent<SpriteRenderer>().sprite = front;
     }
 
@@ -156,17 +147,7 @@ public class Player : MonoBehaviour
             Lines[0].SpriteChange_point();
         }
 
-        if (Enemies.Count == 0)
-        {
-            try
-            {
-                Enemies.AddRange(GameObject.FindGameObjectsWithTag("Enemy"));
-            }
-            catch (UnityException)
-            {
-
-            }
-        }
+        List<GameObject> Enemies = enemies.GetComponent<EnemyList>().enemies;
         if (Enemies.Count != 0)
         {
             int polygon_index = completePolygon();
@@ -199,7 +180,7 @@ public class Player : MonoBehaviour
 
                         if (359.9 < total_angle && total_angle < 360.1)
                         {
-                            Enemies[i].SendMessage("kill");
+                            Enemies[i].SendMessage("Kill");
                         }
                     }
                 }
