@@ -11,8 +11,8 @@ public class Shot : MonoBehaviour {
 
 
 	// Use this for initialization
-	void Start () {
-		//これは自機狙い弾の動作(仮)
+	void Start () { //バラマキとか増やすなら ToDo
+					//これは自機狙い弾の動作(仮)
 		target = GameObject.FindGameObjectWithTag("Player");
 
 		float distanceX = target.transform.position.x - transform.position.x;

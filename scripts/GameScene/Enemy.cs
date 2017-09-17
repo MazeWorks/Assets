@@ -14,6 +14,9 @@ public class Enemy : MonoBehaviour {
 	int frameCount = 0; //生成されてからの時間(フレーム数)
 						//何秒に一度撃つ、みたいな処理をするのにfloat型はめんどいのでここはフレーム数で
 
+	bool killed = false;
+	float timeSinceKilled = 0;
+
 
 
 	// Use this for initialization
@@ -29,7 +32,7 @@ public class Enemy : MonoBehaviour {
 		transform.localPosition += new Vector3(0, -BG.velocity, 0);
 	}
 
-	//自主的に動く
+	//自主的に動く ToDo
 	void Move() {
 
 		if (type == 0) {
@@ -44,7 +47,7 @@ public class Enemy : MonoBehaviour {
 
 	}
 
-	//攻撃
+	//攻撃 ToDo
 	void Attack() {
 		if (frameCount % 120 == 1) {
 			shotGenerator.SendMessage("Generate", transform.position);
@@ -54,18 +57,16 @@ public class Enemy : MonoBehaviour {
 	// Update is called once per frame
 	void Update() {
 		Scroll();
-		Move();
-		Attack();
+		if (!killed) {
+			Move();
+			Attack();
+		}
 		//spriteRenderer.sprite = enemySprite[type]; //種類に合わせて画像を変更
 
-		/*
-		//これはデバッグ用
-		if (MyInput.keyState[(int)KeyCode.K].press) {
-			Kill();
-		}
-		*/
-
 		frameCount++;
+		if (killed) {
+			KillUpdate();
+		}
 	}
 
 
@@ -79,6 +80,19 @@ public class Enemy : MonoBehaviour {
 
 	//やられた
 	void Kill() {
-		Destroy(gameObject);
+		killed = true;
+	}
+
+	//やられ演出用 ToDo
+	void KillUpdate() {
+
+		if (timeSinceKilled < 1) {
+			transform.localScale += 0.01f * new Vector3(1, 1, 1);
+		}
+		else {
+			Destroy(gameObject);
+		}
+
+		timeSinceKilled += Time.deltaTime;
 	}
 }

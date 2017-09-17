@@ -6,10 +6,10 @@ public class EnemyList : MonoBehaviour {
 	public List<GameObject> enemies;
 
 	// Use this for initialization
-	void Start () {
-		
+	void Start() {
+
 	}
-	
+
 
 	//追加
 	void Add(GameObject enemy) {
@@ -23,7 +23,7 @@ public class EnemyList : MonoBehaviour {
 	}
 
 	// Update is called once per frame
-	void Update () {
+	void Update() {
 		print(enemies.Count);
 
 		//十分画面下まで行ったら消す
@@ -33,6 +33,14 @@ public class EnemyList : MonoBehaviour {
 			print(enemies[i].transform.position.y);
 			*/
 			if (enemies[i].transform.position.y < -Constant.UNIT_Y) {
+				Delete(i);
+			}
+
+		}
+
+		//デバッグ用、敵全消し
+		if (MyInput.keyState[(int)KeyCode.K].pressed) {
+			for (int i = 0; i < enemies.Count; i++) {
 				Delete(i);
 			}
 		}
