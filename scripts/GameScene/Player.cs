@@ -143,11 +143,14 @@ public class Player : MonoBehaviour
             Lines.Add(line);
         }
 
-        if (Lines.Count > 128 || Lines[0].GetComponent<Line>().isTimeUp)
+        if (Lines.Count > 0)
         {
-            print("Player.cs : " + Lines[0].GetComponent<Line>().isTimeUp);
-            Destroy(Lines[0].gameObject);
-            Lines.RemoveAt(0);
+            if (Lines.Count > 128 || Lines[0].GetComponent<Line>().isTimeUp)
+            {
+                print("Player.cs : " + Lines[0].GetComponent<Line>().isTimeUp);
+                Destroy(Lines[0].gameObject);
+                Lines.RemoveAt(0);
+            }
         }
 
         List<GameObject> Enemies = enemies.GetComponent<EnemyList>().enemies;
