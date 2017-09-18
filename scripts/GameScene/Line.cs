@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class Line : MonoBehaviour {
 
-    // スプライト
-    public Sprite point;
-    public Sprite line;
-
     // プレハブ
     static GameObject _prefab = null;
 
@@ -21,21 +17,11 @@ public class Line : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        gameObject.GetComponent<SpriteRenderer>().sprite = line;
+        
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
 	}
-
-    public void SpriteChange_line()
-    {
-        gameObject.GetComponent<SpriteRenderer>().sprite = line;
-    }
-
-    public void SpriteChange_point()
-    {
-        gameObject.GetComponent<SpriteRenderer>().sprite = line;
-    }
 }

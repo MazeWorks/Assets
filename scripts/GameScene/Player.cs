@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
     List<Line> Lines;
 
     // 敵キャラのためのリスト
-    public EnemyList enemies;
+    GameObject enemies;
 
     // バリア
     public GameObject barrier;
@@ -36,6 +36,7 @@ public class Player : MonoBehaviour
         MoveDistance = 0;
         Lines = new List<Line>();
         gameObject.GetComponent<SpriteRenderer>().sprite = front;
+        enemies = GameObject.Find("EnemyList");
     }
 
     // Update is called once per frame
@@ -66,7 +67,7 @@ public class Player : MonoBehaviour
                 // リストの二個目の要素を取得
                 var first_move_goal = MoveGoal[1];
                 // ただし、指とキャラの単純な距離が離れすぎていたら途中を切ってそっちに向かう
-                if (euclid_dst(mouse_position.x, mouse_position.y, transform.position.x, transform.position.y) > 4f)
+                if (euclid_dst(mouse_position.x, mouse_position.y, transform.position.x, transform.position.y) > 3f)
                 {
                     first_move_goal = mouse_position;
                     MoveGoal.Clear();
@@ -110,7 +111,6 @@ public class Player : MonoBehaviour
         var res_dir = Mathf.Atan2(Velocity.x, Velocity.y) * Mathf.Rad2Deg;
         if (Velocity.x != 0 || Velocity.y != 0)
         {
-            print(res_dir);
             if (-45 < res_dir && res_dir <= 45)
             {
                 gameObject.GetComponent<SpriteRenderer>().sprite = back;
@@ -144,47 +144,54 @@ public class Player : MonoBehaviour
                 Destroy(Lines[0].gameObject);
                 Lines.RemoveAt(0);
             }
-            Lines[0].SpriteChange_point();
         }
 
         List<GameObject> Enemies = enemies.GetComponent<EnemyList>().enemies;
-        if (Enemies.Count != 0)
+        bool flg = false; // このフレーム消しましたフラグ
+        if (Enemies != null && Enemies.Count > 0)
         {
-            int polygon_index = completePolygon();
-            if (polygon_index >= 0)
+            foreach (GameObject enemy in Enemies)
             {
-                for (int i = 0; i < Enemies.Count; i++)
+                if (enemy == null)
                 {
-                    var enemy_position = Enemies[i].transform.position;
-                    float total_angle = 0;
-                    for (int j = Lines.Count - 1; j > polygon_index; j--)
+                    continue;
+                }
+                var enemy_position = enemy.transform.position;
+                bool[] inspection = new bool[8] { false, false, false, false, false, false, false, false };
+                for (int j = 0; j < Lines.Count; j++)
+                {
+                    var euc = euclid_dst(enemy_position.x, enemy_position.y, Lines[j].transform.position.x, Lines[j].transform.position.y);
+                    if (euc <= 1000.0f)
                     {
-                        var point1 = Lines[j].transform.position;
-                        var point2 = Lines[j - 1].transform.position;
-
-                        var vec1_x = point1.x - enemy_position.x;
-                        var vec1_y = point1.y - enemy_position.y;
-
-                        var vec2_x = point2.x - enemy_position.x;
-                        var vec2_y = point2.y - enemy_position.y;
-
-                        var angle1 = Mathf.Atan2(vec1_x, vec1_y);
-                        var angle2 = Mathf.Atan2(vec2_x, vec2_y);
-
-                        var angle = Mathf.Abs(angle1 - angle2);
-                        if (angle >= Mathf.PI)
-                        {
-                            angle = 2 * Mathf.PI - angle;
-                        }
-                        total_angle += angle * Mathf.Rad2Deg;
-
-                        if (359.9 < total_angle && total_angle < 360.1)
-                        {
-                            Enemies[i].SendMessage("Kill");
-                        }
+                        var diff_x = Lines[j].transform.position.x - enemy_position.x;
+                        var diff_y = Lines[j].transform.position.y - enemy_position.y;
+                        var dir = Mathf.Atan2(diff_y, diff_x) * Mathf.Rad2Deg;
+                        if (dir < 0) dir += 360;
+                        inspection[(int)dir / 45] = true;
+                    }
+                    var total = true;
+                    for (int k = 0; k < 8; k++)
+                    {
+                        total &= inspection[k];
+                    }
+                    if (total)
+                    {
+                        enemy.SendMessage("Kill");
+                        flg = true;
+                        //Enemies.Remove(enemy);
+                        break;
                     }
                 }
             }
+        }
+        if (flg)
+        {
+            print("このフレームで消えてます");
+            for (int i = 0; i < Lines.Count; i++)
+            {
+                Destroy(Lines[i].gameObject);
+            }
+            Lines.Clear();
         }
     }
 
