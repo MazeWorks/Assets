@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
 
     // 敵キャラのためのリスト
     GameObject enemies;
+    GameObject enemyGene;
 
     // バリア
     public GameObject barrier;
@@ -37,6 +38,7 @@ public class Player : MonoBehaviour
         Lines = new List<Line>();
         gameObject.GetComponent<SpriteRenderer>().sprite = front;
         enemies = GameObject.Find("EnemyList");
+        enemyGene = GameObject.Find("EnemyGenerator");
     }
 
     // Update is called once per frame
@@ -139,19 +141,22 @@ public class Player : MonoBehaviour
         {
             Line line = Line.Add(transform.position.x, transform.position.y);
             Lines.Add(line);
-            if (Lines.Count > 128 || Lines[0].GetComponent<Line>().isTimeUp)
-            {
-                Destroy(Lines[0].gameObject);
-                Lines.RemoveAt(0);
-            }
+        }
+
+        if (Lines.Count > 128 || Lines[0].GetComponent<Line>().isTimeUp)
+        {
+            print("Player.cs : " + Lines[0].GetComponent<Line>().isTimeUp);
+            Destroy(Lines[0].gameObject);
+            Lines.RemoveAt(0);
         }
 
         List<GameObject> Enemies = enemies.GetComponent<EnemyList>().enemies;
         bool flg = false; // このフレーム消しましたフラグ
         if (Enemies != null && Enemies.Count > 0)
         {
-            foreach (GameObject enemy in Enemies)
+            for (int i = 0; i < Enemies.Count; i++)
             {
+                GameObject enemy = Enemies[i];
                 if (enemy == null)
                 {
                     continue;
@@ -176,7 +181,7 @@ public class Player : MonoBehaviour
                     }
                     if (total)
                     {
-                        enemy.SendMessage("Kill");
+                        enemyGene.SendMessage("Kill", i);
                         flg = true;
                         //Enemies.Remove(enemy);
                         break;
