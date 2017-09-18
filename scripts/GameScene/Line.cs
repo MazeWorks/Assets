@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Line : MonoBehaviour {
 
+    // 時間切れ
+    public bool isTimeUp;
+
     // プレハブ
     static GameObject _prefab = null;
 
@@ -17,11 +20,16 @@ public class Line : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        Destroy(gameObject, 2.0f);
+        Invoke("timeup", 2.0f);
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
 	}
+
+    void timeup()
+    {
+        isTimeUp = true;
+    }
 }

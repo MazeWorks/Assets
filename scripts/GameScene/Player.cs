@@ -139,7 +139,7 @@ public class Player : MonoBehaviour
         {
             Line line = Line.Add(transform.position.x, transform.position.y);
             Lines.Add(line);
-            if (Lines.Count > 128)
+            if (Lines.Count > 128 || Lines[0].GetComponent<Line>().isTimeUp)
             {
                 Destroy(Lines[0].gameObject);
                 Lines.RemoveAt(0);
@@ -211,10 +211,10 @@ public class Player : MonoBehaviour
             Destroy(line.gameObject);
         }
 
-        for (int i = 0; i < 32; i++)
+        /*for (int i = 0; i < 32; i++)
         {
             PlayerDeath.Add(transform.position.x, transform.position.y);
-        }
+        }*/
     }
 
     private void GetItem(int type)
