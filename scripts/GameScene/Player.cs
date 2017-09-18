@@ -24,10 +24,18 @@ public class Player : MonoBehaviour
     // バリア
     public GameObject barrier;
 
+    // PolygonCollider用ゲームオブジェクト
+    public GameObject inkAttack;
+
+    public int param;
+
     // スプライト
     public Sprite front;
     public Sprite side;
     public Sprite back;
+
+    // 押し始めた時の自キャラの位置
+    private Vector3 touchPos;
 
     // Use this for initialization
     void Start()
@@ -56,7 +64,7 @@ public class Player : MonoBehaviour
             var diff_dst = Mathf.Sqrt(diff_x * diff_x + diff_y * diff_y);
             // 距離差が一定以上
             // ⇒距離の加算&リスト要素の追加
-            if (diff_dst >= 1f)
+            if (diff_dst >= 1.2f)
             {
                 MoveDistance += diff_dst;
                 MoveGoal.Add(mouse_position);
@@ -64,7 +72,7 @@ public class Player : MonoBehaviour
 
             // 自キャラの移動速度を計算
             // 移動距離残量が1以上の時だけ進む
-            if (MoveDistance >= 1 && MoveGoal.Count > 1)
+            if (MoveDistance >= 1f && MoveGoal.Count > 1)
             {
                 // リストの二個目の要素を取得
                 var first_move_goal = MoveGoal[1];
@@ -137,7 +145,7 @@ public class Player : MonoBehaviour
             }
         }
 
-        if (Velocity.x != 0 && Velocity.y != 0)
+        /*if (Velocity.x != 0 && Velocity.y != 0)
         {
             Line line = Line.Add(transform.position.x, transform.position.y);
             Lines.Add(line);
@@ -147,12 +155,23 @@ public class Player : MonoBehaviour
         {
             if (Lines.Count > 128 || Lines[0].GetComponent<Line>().isTimeUp)
             {
-                print("Player.cs : " + Lines[0].GetComponent<Line>().isTimeUp);
                 Destroy(Lines[0].gameObject);
                 Lines.RemoveAt(0);
             }
-        }
+        }*/
 
+        // EdgeCollider2Dを持つ空のゲームオブジェクトにそこまでの座標点をブン投げる
+        // LineのリストからVector2の配列を作る（後ろの5個は無視）
+        /*if (Lines.Count > 10)
+        {
+            Vector2[] points = new Vector2[Lines.Count - 10];
+            for (int i = 0; i < Lines.Count - 10; i++)
+                points[i] = (Vector2)Lines[i].transform.position;
+            EdgeCollider2D ec2d = inkAttack.GetComponent<EdgeCollider2D>();
+            ec2d.points = points;
+        }*/
+
+        /*
         List<GameObject> Enemies = enemies.GetComponent<EnemyList>().enemies;
         bool flg = false; // このフレーム消しましたフラグ
         if (Enemies != null && Enemies.Count > 0)
@@ -201,6 +220,7 @@ public class Player : MonoBehaviour
             }
             Lines.Clear();
         }
+        */
     }
 
     private void kill()
@@ -283,5 +303,25 @@ public class Player : MonoBehaviour
         var td = (a.x - b.x) * (d.y - a.y) + (a.y - b.y) * (a.x - d.x);
 
         return tc * td <= 0 && ta * tb <= 0;
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        print("OnTriggerEnter2D : " + other.gameObject.name);
+        if (other.gameObject.name == "InkAttack")
+        {
+            // 囲んだ判定
+            // PolygonCollider2DにLineの点をすべて渡す
+            Vector2[] points = new Vector2[Lines.Count];
+            for (int i = 0; i < Lines.Count; i++)
+                points[i] = (Vector2)Lines[i].transform.position;
+            PolygonCollider2D pc2d = inkAttack.GetComponent<PolygonCollider2D>();
+            pc2d.points = points;
+        }
+    }
+
+    void move()
+    {
+
     }
 }

@@ -2,34 +2,48 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Line : MonoBehaviour {
+public class Line : MonoBehaviour
+{
 
-    // 時間切れ
-    public bool isTimeUp;
+    public GameObject linePrefab;
+    public float lineLength = 0.2f;
+    public float lineWidth = 0.1f;
+    public GameObject player;
 
-    // プレハブ
-    static GameObject _prefab = null;
+    private Vector3 touchPos;
 
-    public static Line Add(float x, float y)
+    // Use this for initialization
+    void Start()
     {
-        _prefab = Resources.Load("prefab/Line") as GameObject;
-        GameObject g = Instantiate(_prefab, new Vector3(x, y), Quaternion.identity) as GameObject;
-        Line obj = g.GetComponent<Line>();
-        return obj;
+        touchPos = player.transform.position;
+        touchPos.z = 0;
     }
 
-	// Use this for initialization
-	void Start () {
-        Invoke("timeup", 2.0f);
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
-    void timeup()
+    // Update is called once per frame
+    void Update()
     {
-        isTimeUp = true;
+        drawLine();
+    }
+
+    void drawLine()
+    {
+
+        Vector3 startPos = touchPos;
+        Vector3 endPos = player.transform.position;
+        endPos.z = 0;
+
+        if ((endPos - startPos).magnitude > lineLength)
+        {
+            GameObject obj = Instantiate(linePrefab, transform.position, transform.rotation) as GameObject;
+            obj.transform.position = (startPos + endPos) / 2;
+            obj.transform.right = (endPos - startPos).normalized;
+
+            obj.transform.localScale = new Vector3((endPos - startPos).magnitude, lineWidth, lineWidth);
+
+            obj.transform.parent = this.transform;
+
+            touchPos = endPos;
+            print(GameObject.FindGameObjectsWithTag("LinerParts").Length);
+        }
     }
 }
