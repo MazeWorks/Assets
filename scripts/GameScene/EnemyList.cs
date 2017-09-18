@@ -24,7 +24,7 @@ public class EnemyList : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update() {
-		print(enemies.Count);
+		//print(enemies.Count);
 
 		//十分画面下まで行ったら消す
 		for (int i = 0; i < enemies.Count; i++) {
