@@ -58,7 +58,7 @@ public class StateByItem : MonoBehaviour {
 			magnetIsEnable = true;
 			magnetTime = 0;
 		}
-		print("get item " + num);
+		//print("get item " + num);
 	}
 
 

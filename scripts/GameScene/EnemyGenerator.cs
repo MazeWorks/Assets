@@ -49,7 +49,7 @@ public class EnemyGenerator : MonoBehaviour {
 			string[] separated = line.Split(',');
 
 			for (int j = 0; j < separated.GetLength(0); j++) {
-				print(separated[j]);
+				//print(separated[j]);
 			}
 
 			//リスト
@@ -58,9 +58,9 @@ public class EnemyGenerator : MonoBehaviour {
 			generatePattern_[generatePattern_.Count - 1].type = int.Parse(separated[1]);
 			generatePattern_[generatePattern_.Count - 1].pos = new Vector3(float.Parse(separated[2]), Constant.UNIT_Y / 2 + 1, 0);
 
-			print("time: " + generatePattern_[generatePattern_.Count - 1].time);
-			print("type: " + generatePattern_[generatePattern_.Count - 1].type);
-			print("pos.x: " + generatePattern_[generatePattern_.Count - 1].pos.x);
+			//print("time: " + generatePattern_[generatePattern_.Count - 1].time);
+			//print("type: " + generatePattern_[generatePattern_.Count - 1].type);
+			//print("pos.x: " + generatePattern_[generatePattern_.Count - 1].pos.x);
 
 			//配列
 			/*

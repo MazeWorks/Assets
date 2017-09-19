@@ -15,7 +15,7 @@ public class PauseManager : MonoBehaviour {
 
 	public void ButtonClick() {
 
-		print("button " + isPause + Time.timeScale);
+		//print("button " + isPause + Time.timeScale);
 
 		if (isPause) {
 			tmp = Instantiate(Ui);

@@ -12,6 +12,7 @@ public class BG : MonoBehaviour {
 
 	StateByItem stateByItem;
 
+	ScoreManager scoreManager;
 
 
 	// Use this for initialization
@@ -25,6 +26,8 @@ public class BG : MonoBehaviour {
 		}
 
 		stateByItem = GameObject.Find("StateByItem").GetComponent<StateByItem>();
+		
+		scoreManager = GameObject.Find("ScoreManager").GetComponent<ScoreManager>();
 	}
 	
 	// Update is called once per frame
@@ -40,6 +43,9 @@ public class BG : MonoBehaviour {
 
 		//背景を指定の速さで移動させる
 		transform.position += new Vector3(0, -velocity, 0);
+
+		//距離スコアアップ
+		scoreManager.distance += velocity;
 
 		//ループさせる
 		if (transform.position.y < -size) {

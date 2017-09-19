@@ -21,7 +21,7 @@ public class EnemyHitLineChecker : MonoBehaviour {
 		if (col.gameObject.tag == "LineParts") {
 			hitLine = true;
 
-			print("OnTriggerStay");
+			//print("OnTriggerStay");
 		}
 		else {
 			hitLine = false;

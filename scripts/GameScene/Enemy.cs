@@ -14,7 +14,7 @@ public class Enemy : MonoBehaviour {
 	int frameCount = 0; //生成されてからの時間(フレーム数)
 						//何秒に一度撃つ、みたいな処理をするのにfloat型はめんどいのでここはフレーム数で
 
-	bool killed = false;
+	public bool killed = false;
 	float timeSinceKilled = 0;
 
 	public BG bg;
@@ -34,10 +34,10 @@ public class Enemy : MonoBehaviour {
 	public EnemyHitLineChecker ehlcLo;
 
 
-	//やられアニメ
+	//アニメ
 	//public Sprite[] yarareSprite;
 	public Sprite oxYarare;
-	public Sprite wolfYarare;
+	public Sprite leafYarare;
 
 
 	// Use this for initialization
@@ -179,7 +179,7 @@ public class Enemy : MonoBehaviour {
 	//やられた
 	void Kill() {
 		killed = true;
-		print("enemy killed");
+		//print("enemy killed");
 	}
 
 	float alpha = 1;
@@ -193,10 +193,10 @@ public class Enemy : MonoBehaviour {
 			//alpha -= 0.05f;
 			//gameObject.GetComponent<SpriteRenderer>().sprite = yarareSprite[type];
 			if (type == 1) {
-				gameObject.GetComponent<SpriteRenderer>().sprite = oxYarare;
+				//gameObject.GetComponent<SpriteRenderer>().sprite = oxYarare;
 			}
-			else if (type == 4) {
-				gameObject.GetComponent<SpriteRenderer>().sprite = wolfYarare;
+			else if (type == 2) {
+				//gameObject.GetComponent<SpriteRenderer>().sprite = leafYarare;
 			}
 		}
 		else {
