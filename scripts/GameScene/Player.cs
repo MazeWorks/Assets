@@ -179,6 +179,7 @@ public class Player : MonoBehaviour
             bool flg = false; // このフレーム消しましたフラグ
             if (Enemies != null && Enemies.Count > 0)
             {
+                List<int> kill_enemy = new List<int>();
                 for (int i = 0; i < Enemies.Count; i++)
                 {
                     GameObject enemy = Enemies[i];
@@ -208,7 +209,7 @@ public class Player : MonoBehaviour
                         {
                             enemyGene.SendMessage("Kill", i);
                             flg = true;
-                            //Enemies.Remove(enemy);
+                            i--;
                             break;
                         }
                     }
@@ -216,7 +217,6 @@ public class Player : MonoBehaviour
             }
             if (flg)
             {
-                //print("このフレームで消えてます");
                 line.SendMessage("EnemyAttacked");
             }
         }
