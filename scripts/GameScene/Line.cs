@@ -134,7 +134,10 @@ public class Line : MonoBehaviour
                 }
             }
         }*/
-        
+    }
+
+    void EnemyAttacked()
+    {
         GameObject[] line_parts = GameObject.FindGameObjectsWithTag("LineParts");
         foreach (GameObject g in line_parts)
         {
