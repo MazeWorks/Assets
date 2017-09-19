@@ -13,10 +13,30 @@ public class Line : MonoBehaviour
     private Vector3 touchPos;
     private List<GameObject> prev_line;
 
+    public List<Vector2> LinePoints
+    {
+        get
+        {
+            if (prev_line != null || prev_line.Count > 0)
+            {
+                List<Vector2> ans = new List<Vector2>();
+                for (int i = 0; i < prev_line.Count; i++)
+                {
+                    ans.Add(prev_line[i].GetComponent<LineParts>().transform.position);
+                }
+                return ans;
+            }
+            else
+            {
+                return new List<Vector2>();
+            }
+        }
+    }
+
     // Use this for initialization
     void Start()
     {
-        List<GameObject> prev_line = new List<GameObject>();
+        prev_line = new List<GameObject>();
         touchPos = player.transform.position;
         touchPos.z = 0;
     }
@@ -55,7 +75,7 @@ public class Line : MonoBehaviour
             }
             prev_line.Add(obj);
 
-            if (prev_line.Count > 128 || prev_line[0].GetComponent<LineParts>().IsTimeUp)
+            if (prev_line.Count > 64 || prev_line[0].GetComponent<LineParts>().IsTimeUp)
             {
                 Destroy(prev_line[0].gameObject);
                 prev_line.RemoveAt(0);
@@ -65,11 +85,11 @@ public class Line : MonoBehaviour
 
     void collision(GameObject lineParts)
     {
-        GameObject enemyList = GameObject.Find("EnemyList");
+        /*GameObject enemyList = GameObject.Find("EnemyList");
         if (enemyList != null)
         {
             enemyList.SendMessage("Surround");
-        }
+        }*
 
         /*GameObject enemyMgr = GameObject.Find("EnemyGenerator");
         if (enemyMgr != null)
@@ -134,6 +154,8 @@ public class Line : MonoBehaviour
                 }
             }
         }*/
+
+
     }
 
     void EnemyAttacked()

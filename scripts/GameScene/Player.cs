@@ -15,7 +15,8 @@ public class Player : MonoBehaviour
     float MoveDistance;
 
     // 線のためのリスト
-    List<Line> Lines;
+    //List<Line> Lines;
+    public GameObject line;
 
     // 敵キャラのためのリスト
     GameObject enemies;
@@ -43,7 +44,7 @@ public class Player : MonoBehaviour
         MoveGoal = new List<Vector3>();
         Velocity = new Vector2(0, 0);
         MoveDistance = 0;
-        Lines = new List<Line>();
+        //Lines = new List<Line>();
         gameObject.GetComponent<SpriteRenderer>().sprite = front;
         enemies = GameObject.Find("EnemyList");
         enemyGene = GameObject.Find("EnemyGenerator");
@@ -171,56 +172,54 @@ public class Player : MonoBehaviour
             ec2d.points = points;
         }*/
 
-        /*
-        List<GameObject> Enemies = enemies.GetComponent<EnemyList>().enemies;
-        bool flg = false; // このフレーム消しましたフラグ
-        if (Enemies != null && Enemies.Count > 0)
+        if (enemies != null)
         {
-            for (int i = 0; i < Enemies.Count; i++)
+            List<GameObject> Enemies = enemies.GetComponent<EnemyList>().enemies;
+            List<Vector2> line_points = line.GetComponent<Line>().LinePoints;
+            bool flg = false; // このフレーム消しましたフラグ
+            if (Enemies != null && Enemies.Count > 0)
             {
-                GameObject enemy = Enemies[i];
-                if (enemy == null)
+                for (int i = 0; i < Enemies.Count; i++)
                 {
-                    continue;
-                }
-                var enemy_position = enemy.transform.position;
-                bool[] inspection = new bool[8] { false, false, false, false, false, false, false, false };
-                for (int j = 0; j < Lines.Count; j++)
-                {
-                    var euc = euclid_dst(enemy_position.x, enemy_position.y, Lines[j].transform.position.x, Lines[j].transform.position.y);
-                    if (euc <= 1000.0f)
+                    GameObject enemy = Enemies[i];
+                    if (enemy == null)
                     {
-                        var diff_x = Lines[j].transform.position.x - enemy_position.x;
-                        var diff_y = Lines[j].transform.position.y - enemy_position.y;
-                        var dir = Mathf.Atan2(diff_y, diff_x) * Mathf.Rad2Deg;
-                        if (dir < 0) dir += 360;
-                        inspection[(int)dir / 45] = true;
+                        continue;
                     }
-                    var total = true;
-                    for (int k = 0; k < 8; k++)
+                    var enemy_position = enemy.transform.position;
+                    bool[] inspection = new bool[8] { false, false, false, false, false, false, false, false };
+                    for (int j = 0; j < line_points.Count; j++)
                     {
-                        total &= inspection[k];
-                    }
-                    if (total)
-                    {
-                        enemyGene.SendMessage("Kill", i);
-                        flg = true;
-                        //Enemies.Remove(enemy);
-                        break;
+                        var euc = euclid_dst(enemy_position.x, enemy_position.y, line_points[j].x, line_points[j].y);
+                        if (euc <= 1000.0f)
+                        {
+                            var diff_x = line_points[j].x - enemy_position.x;
+                            var diff_y = line_points[j].y - enemy_position.y;
+                            var dir = Mathf.Atan2(diff_y, diff_x) * Mathf.Rad2Deg;
+                            if (dir < 0) dir += 360;
+                            inspection[(int)dir / 45] = true;
+                        }
+                        var total = true;
+                        for (int k = 0; k < 8; k++)
+                        {
+                            total &= inspection[k];
+                        }
+                        if (total)
+                        {
+                            enemyGene.SendMessage("Kill", i);
+                            flg = true;
+                            //Enemies.Remove(enemy);
+                            break;
+                        }
                     }
                 }
             }
-        }
-        if (flg)
-        {
-            print("このフレームで消えてます");
-            for (int i = 0; i < Lines.Count; i++)
+            if (flg)
             {
-                Destroy(Lines[i].gameObject);
+                //print("このフレームで消えてます");
+                line.SendMessage("EnemyAttacked");
             }
-            Lines.Clear();
         }
-        */
     }
 
     private void kill()
@@ -272,7 +271,7 @@ public class Player : MonoBehaviour
         return Mathf.Sqrt(diff_x * diff_x + diff_y * diff_y);
     }
 
-    private int completePolygon()
+    /*private int completePolygon()
     {
         if (Lines.Count < 4)
         {
@@ -294,7 +293,7 @@ public class Player : MonoBehaviour
         }
 
         return -1;
-    }
+    }*/
 
     private bool judgeIentersected(Vector3 a, Vector3 b, Vector3 c, Vector3 d)
     {
@@ -306,7 +305,7 @@ public class Player : MonoBehaviour
         return tc * td <= 0 && ta * tb <= 0;
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    /*void OnTriggerEnter2D(Collider2D other)
     {
         print("OnTriggerEnter2D : " + other.gameObject.name);
         if (other.gameObject.name == "InkAttack")
@@ -319,7 +318,7 @@ public class Player : MonoBehaviour
             PolygonCollider2D pc2d = inkAttack.GetComponent<PolygonCollider2D>();
             pc2d.points = points;
         }
-    }
+    }*/
 
     void move()
     {

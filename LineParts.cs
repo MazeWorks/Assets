@@ -40,11 +40,11 @@ public class LineParts : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (isCollision <= 0)
+        /*if (isCollision <= 0)
         {
             print("[LineParts]OnTriggerEnter2D:" + collision.gameObject.name);
             GameObject line = GameObject.Find("Line");
             line.SendMessage("collision", gameObject);
-        }
+        }*/
     }
 }
