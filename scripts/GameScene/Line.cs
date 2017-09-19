@@ -11,10 +11,12 @@ public class Line : MonoBehaviour
     public GameObject player;
 
     private Vector3 touchPos;
+    private List<GameObject> prev_line;
 
     // Use this for initialization
     void Start()
     {
+        List<GameObject> prev_line = new List<GameObject>();
         touchPos = player.transform.position;
         touchPos.z = 0;
     }
@@ -27,7 +29,6 @@ public class Line : MonoBehaviour
 
     void drawLine()
     {
-
         Vector3 startPos = touchPos;
         Vector3 endPos = player.transform.position;
         endPos.z = 0;
@@ -43,7 +44,102 @@ public class Line : MonoBehaviour
             obj.transform.parent = this.transform;
 
             touchPos = endPos;
-            print(GameObject.FindGameObjectsWithTag("LinerParts").Length);
+
+            if (prev_line == null)
+            {
+                prev_line = new List<GameObject>();
+            }
+            for (int i = 0; i < prev_line.Count; i++)
+            {
+                prev_line[i].SendMessage("wait", i);
+            }
+            prev_line.Add(obj);
+
+            if (prev_line.Count > 128 || prev_line[0].GetComponent<LineParts>().IsTimeUp)
+            {
+                Destroy(prev_line[0].gameObject);
+                prev_line.RemoveAt(0);
+            }
         }
+    }
+
+    void collision(GameObject lineParts)
+    {
+        GameObject enemyList = GameObject.Find("EnemyList");
+        if (enemyList != null)
+        {
+            enemyList.SendMessage("Surround");
+        }
+
+        /*GameObject enemyMgr = GameObject.Find("EnemyGenerator");
+        if (enemyMgr != null)
+        {
+            GameObject enemyList = enemyMgr.GetComponent<EnemyGenerator>().enemyList;
+            List<GameObject> enemies = enemyList.GetComponent<EnemyList>().enemies;
+        //GameObject tekinokawari = GameObject.Find("tekinokawari");
+            for (int i = 0; i < enemies.Count; i++)
+            {
+                Vector2 enemy_pos = new Vector2(tekinokawari.transform.position.x, tekinokawari.transform.position.y);
+                bool[] isKill = new bool[] { false, false, false, false };
+                // 上の検証
+                Ray ray = new Ray(enemy_pos, transform.up);
+                Debug.DrawRay(ray.origin, ray.direction, Color.red, 3.0f);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit))
+                {
+                    if (hit.collider.gameObject.tag == "LineParts")
+                        isKill[0] = true;
+                    print("hit[up]");
+                }
+                // 下の検証
+                ray = new Ray(enemy_pos, -transform.up);
+        Debug.DrawRay(ray.origin, ray.direction, Color.red, 3.0f);
+
+        if (Physics.Raycast(ray, out hit))
+                {
+                    if (hit.collider.gameObject.tag == "LineParts")
+                        isKill[1] = true;
+                    print("hit[down]");
+                }
+                // 右の検証
+                ray = new Ray(enemy_pos, transform.right);
+        Debug.DrawRay(ray.origin, ray.direction, Color.red, 3.0f);
+
+        if (Physics.Raycast(ray, out hit))
+                {
+                    if (hit.collider.gameObject.tag == "LineParts")
+                        isKill[2] = true;
+                    print("hit[right]");
+                }
+                // 左の検証
+                ray = new Ray(enemy_pos, -transform.right);
+        Debug.DrawRay(ray.origin, ray.direction, Color.red, 3.0f);
+
+        if (Physics.Raycast(ray, out hit))
+                {
+                    if (hit.collider.gameObject.tag == "LineParts")
+                        isKill[3] = true;
+                    print("hit[left]");
+                }
+                // isKillの検証
+                bool b1 = true;
+                foreach (bool b2 in isKill)
+                {
+                    b1 &= b2;
+                }
+                if (b1)
+                {
+            enemyMgr.SendMessage("Kill", i);
+            print("kill");
+                }
+            }
+        }*/
+        
+        GameObject[] line_parts = GameObject.FindGameObjectsWithTag("LineParts");
+        foreach (GameObject g in line_parts)
+        {
+            Destroy(g);
+        }
+        prev_line.Clear();
     }
 }

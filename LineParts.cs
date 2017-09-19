@@ -8,9 +8,13 @@ public class LineParts : MonoBehaviour {
     bool isTimeup;
     public bool IsTimeUp { get { return isTimeup; } }
 
-	// Use this for initialization
+    // 自キャラと衝突する権利を得るまでの待機時間
+    int isCollision;
+
+    // Use this for initialization
 	void Start () {
         isTimeup = false;
+        isCollision = 5;
         Invoke("timeup", 2.0f);
 	}
 	
@@ -24,6 +28,11 @@ public class LineParts : MonoBehaviour {
         isTimeup = true;
     }
 
+    void wait(int i)
+    {
+        isCollision--;
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         print("[LineParts]OnCollisionEnter2D:" + collision.gameObject.name);
@@ -31,6 +40,11 @@ public class LineParts : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        print("[LineParts]OnTriggerEnter2D:" + collision.gameObject.name);
+        if (isCollision <= 0)
+        {
+            print("[LineParts]OnTriggerEnter2D:" + collision.gameObject.name);
+            GameObject line = GameObject.Find("Line");
+            line.SendMessage("collision", gameObject);
+        }
     }
 }
