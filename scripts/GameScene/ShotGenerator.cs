@@ -12,8 +12,16 @@ public class ShotGenerator : MonoBehaviour {
 	}
 
 
-	void Generate(Vector3 pos) {
-		Instantiate(shot, pos, Quaternion.Euler(0, 0, 0), parent);
+	public void Generate(Vector3 pos, float angleDeg, float velocity) {
+		//生成
+		GameObject shotClone = Instantiate(shot, pos, Quaternion.Euler(0, 0, 0), parent);
+		
+		//角度決定
+		shotClone.GetComponent<Shot>().angle = angleDeg * Mathf.Deg2Rad;
+
+		//速度決定
+		shotClone.GetComponent<Shot>().velocity = velocity;
+
 		//print("a");
 	}
 

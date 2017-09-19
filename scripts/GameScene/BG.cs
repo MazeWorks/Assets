@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class BG : MonoBehaviour {
 	public float size; //縦の画像サイズ(マス数)
-	public static float velocity = 0.033f; //スクロールの速さ
+	public const float velocityDefault = 0.033f;
+	public float velocity = velocityDefault; //スクロールの速さ
 
 	public GameObject[] bg = new GameObject[2]; //実際の背景(オブジェクト)
 	public SpriteRenderer[] bgSpriteRenderer = new SpriteRenderer[2]; //背景のSprite Renderer
 
-	public static int page = 0; //現在進んだページ数
+	StateByItem stateByItem;
+
 
 
 	// Use this for initialization
@@ -22,12 +24,20 @@ public class BG : MonoBehaviour {
 			bg[i].transform.localPosition = new Vector3(0, size * i, 0);
 		}
 
-		//ページ数リセット
-		page = 0;
+		stateByItem = GameObject.Find("StateByItem").GetComponent<StateByItem>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		/*
+		if (stateByItem.stopIsEnable) {
+			velocity = 0;
+		}
+		else {
+			velocity = velocityDefault;
+		}*/
+
+
 		//背景を指定の速さで移動させる
 		transform.position += new Vector3(0, -velocity, 0);
 
@@ -39,11 +49,9 @@ public class BG : MonoBehaviour {
 			//1枚目の色を2枚目の色と同じに
 			bgSpriteRenderer[0].color = bgSpriteRenderer[1].color;
 
-			//ページ数増加
-			page++;
 
 			//次ページの色を指定　ページ数から色を決定するルールを決めるといいかなー
-			bgSpriteRenderer[1].color = Color.cyan;
+			//bgSpriteRenderer[1].color = Color.cyan;
 		}
 	}
 }

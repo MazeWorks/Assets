@@ -5,13 +5,14 @@ using UnityEngine;
 public class Shot : MonoBehaviour {
 	public GameObject target; //自機狙いの時のターゲット
 	public float velocity; //弾速
-	float angle; //ラジアン角
+	public float angle; //ラジアン角
 
 	public GameObject player;
 
 
 	// Use this for initialization
 	void Start () { //バラマキとか増やすなら ToDo
+		/*
 					//これは自機狙い弾の動作(仮)
 		target = GameObject.FindGameObjectWithTag("Player");
 
@@ -25,6 +26,7 @@ public class Shot : MonoBehaviour {
 			angle = Mathf.Atan(distanceY / distanceX) + Mathf.PI;
 		}
 		//ここまで自機狙い弾
+		*/
 
 		//殺す用
 		player = GameObject.FindGameObjectWithTag("Player");
