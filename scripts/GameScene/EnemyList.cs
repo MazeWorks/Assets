@@ -31,6 +31,11 @@ public class EnemyList : MonoBehaviour {
 			print(i + "左" + enemies[i].GetComponent<Enemy>().ehlcLe.hitLine);
 			print(i + "下" + enemies[i].GetComponent<Enemy>().ehlcLo.hitLine);
 		}
+
+		GameObject line = GameObject.Find("Line");
+		if(line != null) {
+			line.SendMessage("EnemyAttacked");
+		}
 	}
 
 

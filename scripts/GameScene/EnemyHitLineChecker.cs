@@ -18,7 +18,7 @@ public class EnemyHitLineChecker : MonoBehaviour {
 
 
 	void OnTriggerStay2D(Collider2D col) {
-		if (col.gameObject.tag == "LinerParts") {
+		if (col.gameObject.tag == "LineParts") {
 			hitLine = true;
 
 			print("OnTriggerStay");
