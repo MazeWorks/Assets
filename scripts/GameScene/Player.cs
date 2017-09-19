@@ -233,11 +233,12 @@ public class Player : MonoBehaviour
         }
 
         Destroy(this.gameObject);
+        Destroy(GameObject.Find("Line"));
 
-        foreach (Line line in Lines)
+        /*foreach (Line line in Lines)
         {
             Destroy(line.gameObject);
-        }
+        }*/
 
         /*for (int i = 0; i < 32; i++)
         {
