@@ -5,9 +5,32 @@ using UnityEngine;
 public class EnemyList : MonoBehaviour {
 	public List<GameObject> enemies;
 
+
 	// Use this for initialization
 	void Start() {
 
+	}
+
+	void Surround() {
+		//囲まれ判定
+		if (enemies == null) return;
+		for (int i = 0; i < enemies.Count; i++) {
+			//Enemy ene = 
+			if (enemies[i].GetComponent<Enemy>().ehlcRi == null) return;
+			if (enemies[i].GetComponent<Enemy>().ehlcRi.hitLine &&
+				enemies[i].GetComponent<Enemy>().ehlcHi.hitLine &&
+				enemies[i].GetComponent<Enemy>().ehlcLe.hitLine &&
+				enemies[i].GetComponent<Enemy>().ehlcLo.hitLine) {
+
+
+				Delete(i);
+
+			}
+			print(i + "右" + enemies[i].GetComponent<Enemy>().ehlcRi.hitLine);
+			print(i + "上" + enemies[i].GetComponent<Enemy>().ehlcHi.hitLine);
+			print(i + "左" + enemies[i].GetComponent<Enemy>().ehlcLe.hitLine);
+			print(i + "下" + enemies[i].GetComponent<Enemy>().ehlcLo.hitLine);
+		}
 	}
 
 
@@ -44,5 +67,15 @@ public class EnemyList : MonoBehaviour {
 				Delete(i);
 			}
 		}
+
+		/*
+		if (enemies.Count > 0) {
+			//print(enemies[0].GetComponent<Enemy>().ehlcRi.name);
+			EnemyHitLineChecker hoge = enemies[0].GetComponent<Enemy>().ehlcRi;
+			bool hoge2 = false;
+			hoge2 = hoge.hitLine;
+		}*/
+
+
 	}
 }
