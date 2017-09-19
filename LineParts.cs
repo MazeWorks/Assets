@@ -25,6 +25,7 @@ public class LineParts : MonoBehaviour {
 
     void timeup()
     {
+        print("timeup");
         isTimeup = true;
     }
 
